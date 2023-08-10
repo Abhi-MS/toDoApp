@@ -11,7 +11,7 @@ var newWorkI = [];
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const mongoURL = 'mongodb://0.0.0.0:27017/todolistDB';
+const mongoURL = 'mongodb+srv://Abhi:maY1h1Hhjffelz2I@cluster0.f6b5svo.mongodb.net/todolistDB';
 mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const itemSchema = new mongoose.Schema({
@@ -26,15 +26,8 @@ const listSchema = {
   items: [itemSchema]
 };
 const List = mongoose.model("List",listSchema);
-// const workItemSchema = new mongoose.Schema({
-//     name: {
-//       type: String,
-//       required: [true, "Please check your entry"]
-//     }
-// });
 
 const Item = mongoose.model('Item', itemSchema);
-const WorkItem = mongoose.model('WorkItem',itemSchema);
 
 const item1 = new Item({
     name: "Get new health card"
@@ -54,12 +47,9 @@ const item4 = new Item({
 
 
 const defaultItems = [item1,item2, item3];
-const defaultWorkItems = [item4];
-
-
 
 var newItem = "";
-var newWorkItem = "";
+
 // const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 // const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 // let day = weekday[date.getDay()];
@@ -79,17 +69,6 @@ app.get("/", async function(req, res){
     res.render("index.ejs",{listTitle: "Today", newItems:newI});
   }
 });
-// app.get("/work", async function(req, res){
-//   newWorkI= await WorkItem.find({});
-//   if(newWorkI.length===0){
-//     await WorkItem.insertMany(defaultWorkItems);
-//     console.log("added default work items");
-//     res.redirect("/work");
-//   }
-//   else{
-//     res.render("work.ejs",{listTitle: "Work List",newWorkItems:newWorkI});
-//   }
-// });
 
 
 app.get("/:customListName", async function(req,res){
@@ -112,7 +91,7 @@ app.get("/:customListName", async function(req,res){
 
 app.post("/", async (req, res) => {
   newItem=req.body["item"];
-  newWorkItem =req.body["workItem"];
+  // newWorkItem =req.body["workItem"];
   const listName = req.body["list"];
   const listItem = req.body["listItem"];
   console.log(listName);
@@ -124,14 +103,7 @@ app.post("/", async (req, res) => {
     newItem="";
     res.redirect("/");
   };
-  // if(newWorkItem){
-  //   const item1 = new WorkItem({
-  //       name: newWorkItem
-  //   });
-  //   await WorkItem.insertMany(item1);
-  //   newWorkItem="";
-  //   res.redirect("/work");
-  // }
+
   if(listItem){
     const newItem = new Item({
       name:listItem
@@ -153,11 +125,6 @@ app.post("/delete",function(req,res){
     Item.findByIdAndRemove(checkedItemId).exec();
     res.redirect("/")
   }
-
-  // if(listName === "Work List"){
-  //       WorkItem.findByIdAndRemove(checkedItemId).exec();
-  //       res.redirect("/work")
-  // }
   else{
         List.findOneAndUpdate(
             { name: listName },
@@ -172,12 +139,6 @@ app.post("/delete",function(req,res){
   }
 
 })
-
-// app.post("/deletework",function(req,res){
-//   const checkedItemId = req.body.checkbox;
-//   WorkItem.findByIdAndRemove(checkedItemId).exec();
-//   res.redirect("/work")
-// })
 
 
 app.listen(port, () => {
