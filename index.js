@@ -20,6 +20,11 @@ const itemSchema = new mongoose.Schema({
     }
 });
 
+const listSchema = {
+  name: String,
+  items: [itemSchema]
+};
+const List = mongoose.model("List",listSchema);
 // const workItemSchema = new mongoose.Schema({
 //     name: {
 //       type: String,
@@ -45,6 +50,8 @@ const item3 = new Item({
 const item4 = new Item({
     name: "Apply to Sobey's"
 });
+
+
 const defaultItems = [item1,item2, item3];
 const defaultWorkItems = [item4];
 
@@ -59,6 +66,9 @@ var newWorkItem = "";
 // let currentDay = date.getDay();
 // let currentD = day+", "+currentMonth.toString()+" "+currentDay.toString();
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 app.get("/", async function(req, res){
   newI= await Item.find({});
@@ -68,24 +78,46 @@ app.get("/", async function(req, res){
     res.redirect("/");
   }
   else{
-    res.render("index.ejs",{newItems:newI});
+    res.render("index.ejs",{listTitle: "Today", newItems:newI});
   }
 });
-app.get("/work", async function(req, res){
-  newWorkI= await WorkItem.find({});
-  if(newWorkI.length===0){
-    await WorkItem.insertMany(defaultWorkItems);
-    console.log("added default work items");
-    res.redirect("/work");
+// app.get("/work", async function(req, res){
+//   newWorkI= await WorkItem.find({});
+//   if(newWorkI.length===0){
+//     await WorkItem.insertMany(defaultWorkItems);
+//     console.log("added default work items");
+//     res.redirect("/work");
+//   }
+//   else{
+//     res.render("work.ejs",{listTitle: "Work List",newWorkItems:newWorkI});
+//   }
+// });
+
+
+app.get("/:customListName", async function(req,res){
+  const customListName = req.params.customListName;
+  const foundList = await List.findOne({ name: customListName }).exec();
+  if(foundList){
+    console.log("List already exists")
+    res.render("list.ejs",{listTitle: capitalizeFirstLetter(foundList.name), newListItems:foundList.items})
   }
   else{
-    res.render("work.ejs",{newWorkItems:newWorkI});
+    const list = new List({
+        name: customListName,
+        items: defaultItems
+      });
+      list.save();
+      res.redirect("/"+customListName);
   }
+
 });
 
 app.post("/", async (req, res) => {
   newItem=req.body["item"];
   newWorkItem =req.body["workItem"];
+  const listName = req.body["list"];
+  const listItem = req.body["listItem"];
+  console.log(listName);
   if(newItem){
     const item1 = new Item({
         name: newItem
@@ -94,27 +126,60 @@ app.post("/", async (req, res) => {
     newItem="";
     res.redirect("/");
   };
-  if(newWorkItem){
-    const item1 = new WorkItem({
-        name: newWorkItem
+  // if(newWorkItem){
+  //   const item1 = new WorkItem({
+  //       name: newWorkItem
+  //   });
+  //   await WorkItem.insertMany(item1);
+  //   newWorkItem="";
+  //   res.redirect("/work");
+  // }
+  if(listItem){
+    const newItem = new Item({
+      name:listItem
     });
-    await WorkItem.insertMany(item1);
-    newWorkItem="";
-    res.redirect("/work");
+    try{
+      await List.updateOne({name:listName}, {$push:{items:newItem}});
+        res.redirect('/' + listName);
+
+    }catch(err){
+      console.log(err);
+    }
   }
 });
 
 app.post("/delete",function(req,res){
   const checkedItemId = req.body.checkbox;
-  Item.findByIdAndRemove(checkedItemId).exec();
-  res.redirect("/")
+  const listName = req.body.listName;
+  if (listName === "Today") {
+    Item.findByIdAndRemove(checkedItemId).exec();
+    res.redirect("/")
+  }
+
+  // if(listName === "Work List"){
+  //       WorkItem.findByIdAndRemove(checkedItemId).exec();
+  //       res.redirect("/work")
+  // }
+  else{
+        List.findOneAndUpdate(
+            { name: listName },
+            { $pull: { items: { _id: checkedItemId } } }
+        )
+            .then(function () {
+                res.redirect("/" + listName);
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+  }
+
 })
 
-app.post("/deletework",function(req,res){
-  const checkedItemId = req.body.checkbox;
-  WorkItem.findByIdAndRemove(checkedItemId).exec();
-  res.redirect("/work")
-})
+// app.post("/deletework",function(req,res){
+//   const checkedItemId = req.body.checkbox;
+//   WorkItem.findByIdAndRemove(checkedItemId).exec();
+//   res.redirect("/work")
+// })
 
 
 app.listen(port, () => {

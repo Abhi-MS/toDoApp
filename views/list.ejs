@@ -2,8 +2,8 @@
 <div class="px-4 py-5 my-5 text-center mb-3 pb-3">
     <h1 class="text-muted display-5 fw-bold"><%=locals.listTitle%></h1>
     <div class="col-lg-6 mx-auto border rounded sideColour">
-      <% if(locals.newWorkItems){ %>
-          <%newWorkItems.forEach(function(item){%>
+      <% if(locals.newListItems){ %>
+          <%newListItems.forEach(function(item){%>
             <form action="/delete" method="post">
               <div class="lead text-md-start p-4 border-bottom">
                 <input type="checkbox" name="checkbox" value="<%= item._id %>" class="cbox" autocomplete="off" onchange="this.form.submit()"> <label for="cbox"><%=item.name%></label>
@@ -11,8 +11,8 @@
               <input type="hidden" name="listName" value="<%=listTitle%>"></<input>
             </form>      <% })} %>
         <form action="/" method="POST" autocomplete="off"class="item">
-                <input type="text" name="workItem" placeholder="New Item"class="form-control border-0" required>
-                <button type="submit" name="list" style="font-size:larger" class="rounded-circle m-1">+</button>
+                <input type="text" name="listItem" placeholder="New Item"class="form-control border-0" required>
+                <button type="submit" name="list" style="font-size:larger" class="rounded-circle m-1" value="<%=listTitle%>">+</button>
         </form>
     </div>
   </div>

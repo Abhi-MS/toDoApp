@@ -2,7 +2,7 @@
 <!-- --------------------------------------------- -->
 
 <div class="px-4 py-5 my-5 text-center mb-3 pb-3">
-    <h1 class="text-muted display-5 fw-bold">Today</h1>
+    <h1 class="text-muted display-5 fw-bold"><%=locals.listTitle%></h1>
     <div class="col-lg-6 mx-auto border rounded sideColour">
         <% if(locals.newItems){ %>
             <%newItems.forEach(function(item){%>
@@ -10,11 +10,12 @@
                 <div class="lead text-md-start p-4 border-bottom">
                   <input type="checkbox" name="checkbox" value="<%= item._id %>" class="cbox" autocomplete="off" onchange="this.form.submit()"> <label for="cbox"><%=item.name%></label>
                 </div>
+                <input type="hidden" name="listName" value="<%=listTitle%>"></<input>
               </form>
         <% })} %>
         <form action="/" method="POST" autocomplete="off" class="item sideColour">
                 <input type="text" name="item" placeholder="New Item"class="form-control border-0" required>
-                <button type="submit" class="rounded-circle m-1 ">+</button>
+                <button type="submit" name="list" class="rounded-circle m-1 ">+</button>
         </form>
     </div>
   </div>
