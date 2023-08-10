@@ -1,0 +1,68 @@
+ul {
+    list-style-type: none;
+}
+.cbox:checked + label {
+  text-decoration: line-through;
+}
+*{
+  margin: 0px;
+}
+body{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+footer{
+  margin-top: auto;
+}
+h1{
+  font-family: luminari;
+  font-style: italic; 
+}
+a{
+  font-family: luminari;
+  font-style: italic;
+}
+header{
+  
+  padding-left: 1rem;
+}
+
+.item{
+  display: flex;
+}
+button{
+  width: 45px;
+  height: 40px;
+  opacity: 0.1;
+  background-color:cadetblue ;
+  border: 0px;
+}
+input::placeholder {
+  text-align: center;
+  font-family: luminari;
+  margin: 0px;
+}
+input[type="text"], textarea {
+
+  background-color : #edf1f8; 
+  color: #edf1f8;
+  font-size: 1rem;
+  opacity: 0.5;
+
+}
+
+
+#grad1 {
+  height: 200px;
+  background-color: #cedffd; /* For browsers that do not support gradients */
+  background-image: linear-gradient(to right,rgb(71, 225, 249),#98c9d8, #ebf3f4 );
+  margin: 0px;
+}
+.mainColour{
+  background-color: #cedffd;
+  
+}
+.sideColour{
+  background-color:#edf1f8;  
+}
