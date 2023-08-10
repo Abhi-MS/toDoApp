@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const app = express();
+const _ = require("lodash");
 // const date = new Date();
 const port = 3000;
 var newI = [];
@@ -66,9 +67,6 @@ var newWorkItem = "";
 // let currentDay = date.getDay();
 // let currentD = day+", "+currentMonth.toString()+" "+currentDay.toString();
 
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
 
 app.get("/", async function(req, res){
   newI= await Item.find({});
@@ -95,11 +93,11 @@ app.get("/", async function(req, res){
 
 
 app.get("/:customListName", async function(req,res){
-  const customListName = req.params.customListName;
+  const customListName = _.capitalize(req.params.customListName);
   const foundList = await List.findOne({ name: customListName }).exec();
   if(foundList){
     console.log("List already exists")
-    res.render("list.ejs",{listTitle: capitalizeFirstLetter(foundList.name), newListItems:foundList.items})
+    res.render("list.ejs",{listTitle:foundList.name, newListItems:foundList.items})
   }
   else{
     const list = new List({
