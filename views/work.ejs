@@ -4,8 +4,11 @@
     <div class="col-lg-6 mx-auto border rounded sideColour">
       <% if(locals.newWorkItems){ %>
           <%newWorkItems.forEach(function(item){%>
-            <div class="lead text-md-start p-4 border-bottom"><input type="checkbox" class="cbox" autocomplete="off"> <label for="cbox"><%=item.name%></label></div>
-      <% })} %>
+            <form action="/deletework" method="post">
+              <div class="lead text-md-start p-4 border-bottom">
+                <input type="checkbox" name="checkbox" value="<%= item._id %>" class="cbox" autocomplete="off" onchange="this.form.submit()"> <label for="cbox"><%=item.name%></label>
+              </div>
+            </form>      <% })} %>
         <form action="/" method="POST" autocomplete="off"class="item">
                 <input type="text" name="workItem" placeholder="New Item"class="form-control border-0" required>
                 <button type="submit" style="font-size:larger" class="rounded-circle m-1">+</button>

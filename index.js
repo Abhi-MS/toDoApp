@@ -104,6 +104,18 @@ app.post("/", async (req, res) => {
   }
 });
 
+app.post("/delete",function(req,res){
+  const checkedItemId = req.body.checkbox;
+  Item.findByIdAndRemove(checkedItemId).exec();
+  res.redirect("/")
+})
+
+app.post("/deletework",function(req,res){
+  const checkedItemId = req.body.checkbox;
+  WorkItem.findByIdAndRemove(checkedItemId).exec();
+  res.redirect("/work")
+})
+
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

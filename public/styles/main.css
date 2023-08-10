@@ -17,14 +17,14 @@ footer{
 }
 h1{
   font-family: luminari;
-  font-style: italic; 
+  font-style: italic;
 }
 a{
   font-family: luminari;
   font-style: italic;
 }
 header{
-  
+
   padding-left: 1rem;
 }
 
@@ -36,7 +36,7 @@ button{
   height: 40px;
   opacity: 0.1;
   background-color:cadetblue ;
-  border: 0px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
 input::placeholder {
   text-align: center;
@@ -45,7 +45,7 @@ input::placeholder {
 }
 input[type="text"], textarea {
 
-  background-color : #edf1f8; 
+  background-color : #edf1f8;
   color: #edf1f8;
   font-size: 1rem;
   opacity: 0.5;
@@ -61,8 +61,8 @@ input[type="text"], textarea {
 }
 .mainColour{
   background-color: #cedffd;
-  
+
 }
 .sideColour{
-  background-color:#edf1f8;  
+  background-color:#edf1f8;
 }

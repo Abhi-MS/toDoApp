@@ -6,7 +6,11 @@
     <div class="col-lg-6 mx-auto border rounded sideColour">
         <% if(locals.newItems){ %>
             <%newItems.forEach(function(item){%>
-              <div class="lead text-md-start p-4 border-bottom"><input type="checkbox" class="cbox" autocomplete="off"> <label for="cbox"><%=item.name%></label></div>
+              <form action="/delete" method="post">
+                <div class="lead text-md-start p-4 border-bottom">
+                  <input type="checkbox" name="checkbox" value="<%= item._id %>" class="cbox" autocomplete="off" onchange="this.form.submit()"> <label for="cbox"><%=item.name%></label>
+                </div>
+              </form>
         <% })} %>
         <form action="/" method="POST" autocomplete="off" class="item sideColour">
                 <input type="text" name="item" placeholder="New Item"class="form-control border-0" required>
