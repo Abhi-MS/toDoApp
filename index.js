@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const app = express();
+const PORT = process.env.PORT || 3030;
 const _ = require("lodash");
 // const date = new Date();
 const port = 3000;
@@ -11,7 +12,7 @@ var newWorkI = [];
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const mongoURL = 'mongodb+srv://Abhi:maY1h1Hhjffelz2I@cluster0.f6b5svo.mongodb.net/todolistDB';
+const mongoURL = process.env.MONGODB_URL;
 mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const itemSchema = new mongoose.Schema({
