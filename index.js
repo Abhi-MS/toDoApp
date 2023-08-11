@@ -36,7 +36,6 @@ const item1 = new Item({
 const item2 = new Item({
     name: "Go for groccery shopping"
 });
-
 const item3 = new Item({
     name: "Apply to Sobey's"
 });
@@ -87,23 +86,22 @@ app.get("/:customListName", async function(req,res){
   const customListName = _.capitalize(req.params.customListName);
   try{
     const foundList = await List.findOne({ name: customListName }).exec();
+    if(foundList){
+      console.log("List already exists")
+      res.render("list.ejs",{listTitle:foundList.name, newListItems:foundList.items})
+    }
+    else{
+      const list = new List({
+          name: customListName,
+          items: defaultItems
+        });
+        list.save();
+        res.redirect("/"+customListName);
+    }
   }
   catch(err){
     console.log(err);
   }
-  if(foundList){
-    console.log("List already exists")
-    res.render("list.ejs",{listTitle:foundList.name, newListItems:foundList.items})
-  }
-  else{
-    const list = new List({
-        name: customListName,
-        items: defaultItems
-      });
-      list.save();
-      res.redirect("/"+customListName);
-  }
-
 });
 
 app.post("/", async (req, res) => {
