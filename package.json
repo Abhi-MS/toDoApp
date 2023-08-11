@@ -1,7 +1,7 @@
 {
   "name": "todo",
   "version": "1.0.0",
-  "description": "",
+  "description": "Web app for to do list with DB. Express, Node.js, Bootstrap, MongoDB, Mongoose",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,5 +13,6 @@
     "express": "^4.18.2",
     "lodash": "^4.17.21",
     "mongoose": "^7.4.2"
-  }
+  },
+  "devDependencies": {}
 }
