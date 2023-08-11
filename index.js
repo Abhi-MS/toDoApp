@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 const _ = require("lodash");
 // const date = new Date();
 var newI = [];
@@ -59,11 +59,23 @@ var newItem = "";
 
 
 app.get("/", async function(req, res){
-  newI= await Item.find({});
+  try{
+    newI= await Item.find({});
+  }
+  catch(err)
+  {
+    console.log(err);
+  }
   if(newI.length===0){
-    await Item.insertMany(defaultItems);
-    console.log("added default items");
-    res.redirect("/");
+    try{
+      await Item.insertMany(defaultItems);
+      console.log("added default items");
+      res.redirect("/");
+    }
+    catch(err)
+    {
+      console.log(err);
+    }
   }
   else{
     res.render("index.ejs",{listTitle: "Today", newItems:newI});
@@ -73,7 +85,12 @@ app.get("/", async function(req, res){
 
 app.get("/:customListName", async function(req,res){
   const customListName = _.capitalize(req.params.customListName);
-  const foundList = await List.findOne({ name: customListName }).exec();
+  try{
+    const foundList = await List.findOne({ name: customListName }).exec();
+  }
+  catch(err){
+    console.log(err);
+  }
   if(foundList){
     console.log("List already exists")
     res.render("list.ejs",{listTitle:foundList.name, newListItems:foundList.items})
@@ -99,9 +116,15 @@ app.post("/", async (req, res) => {
     const item1 = new Item({
         name: newItem
     });
-    await Item.insertMany(item1);
-    newItem="";
-    res.redirect("/");
+    try{
+      await Item.insertMany(item1);
+      newItem="";
+      res.redirect("/");
+    }
+    catch(err){
+      console.log(err);
+    }
+
   };
 
   if(listItem){
