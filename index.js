@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const app = express();
-const PORT = process.env.PORT || 3030;
+const port = process.env.PORT || 5000;
 const _ = require("lodash");
 // const date = new Date();
 var newI = [];
@@ -142,5 +142,5 @@ app.post("/delete",function(req,res){
 
 
 app.listen(port, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${port}`);
 });
