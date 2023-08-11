@@ -5,7 +5,6 @@ const app = express();
 const PORT = process.env.PORT || 3030;
 const _ = require("lodash");
 // const date = new Date();
-const port = 3000;
 var newI = [];
 var newWorkI = [];
 
@@ -143,5 +142,5 @@ app.post("/delete",function(req,res){
 
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server running on port ${PORT}`);
 });
